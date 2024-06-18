@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "27be9507-fc37-4838-b38c-3bd42da8d9fa",
+		"name": "Restful-Booker-Platform",
+		"description": "# Restful-Booker-Platform\n\nWelcome to restful-booker-platform, a collection of Web APIs built using SpringBoot that form together to create a fake Bed and Breakfast website. Each API is responsible for a section of the site, for example the management of rooms and bookings.\n\nAs this is a more complex application the challenge with testing this site is understanding when to focus on individual API testing, and when to combine APIs in your testing.\n\nIt also comes with a ReactJS frontend that can be used for practising testing techniques beyond API testing.\n\n**Where are the APIs?**\n\nYou can find the code for Restful-booker-platform on GitHub here: [https://github.com/mwinteringham/restful-booker-platform](https://github.com/mwinteringham/restful-booker-platform)\n\nYou can find a deployed instance at [https://automationintesting.online](https://automationintesting.online)\n\nThe application is seeded with data for you to work with **and resets itself every 10 minutes back to that default state.**",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21552418"
+	},
+	"item": [
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var logintoken=jsonData.token;\r",
+									"pm.environment.set(\"TOKEN\", logintoken);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\":\"admin\",\r\n\"password\":\"password123\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var booking=jsonData.bookingid;\r",
+									"pm.environment.set(\"Bookingid\", booking);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "\"token\": \"9e77db803efb5f1\"",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"khaled\",\r\n    \"lastname\": \"gamal\",\r\n    \"totalprice\": 333,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2007-01-17\",\r\n        \"checkout\": \"2007-01-25\"\r\n    },\r\n    \"additionalneeds\": \"breakfast\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/booking",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET BY ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Your test name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.firstname).to.eql(\"khaled\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(205);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/booking/{{Bookingid}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"booking",
+								"{{Bookingid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL BOOKING",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/booking",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"78sss\",\n    \"lastname\": \"ali\",\n    \"totalprice\": 222,\n    \"depositpaid\": true,\n    \"bookingdates\": {\n        \"checkin\": \"2017-01-17\",\n        \"checkout\": \"2018-01-11\"\n    },\n    \"additionalneeds\": \"dinner\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/booking/{{Bookingid}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"booking",
+								"{{Bookingid}}"
+							]
+						},
+						"description": "A request that allows you to update a booking's details within the booking API. To update other bookings, simply update the booking ID from '1' to a different booking ID number.\n\n**Authorisation**\n\nTo use this request you must be authorised.\n\nAuthorisation is achieved by creating a `Cookie` header with the value `token=abc123`. To get a valid token, you send a request to `POST /auth` using the `Auth` API in restful-booker-platform.\n\nSimply run the request once with the default credentials to have Postman add a `token` to the Cookies manager."
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token={{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"ssss\",\r\n    \"lastname\": \"ali\",\r\n    \"totalprice\": 222,\r\n    \"depositpaid\": true,\r\n    \"bookingdates\": {\r\n        \"checkin\": \"2017-01-17\",\r\n        \"checkout\": \"2018-01-11\"\r\n    },\r\n    \"additionalneeds\": \"dinner\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/booking/{{Bookingid}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"booking",
+								"{{Bookingid}}"
+							]
+						},
+						"description": "A simple health check request for the Booking API."
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBooking",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Referer",
+								"value": ""
+							},
+							{
+								"key": "Cookie",
+								"value": "token={{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/booking/{{Bookingid}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"booking",
+								"{{Bookingid}}"
+							]
+						},
+						"description": "A request that allows you to delete a booking's details within the booking API. To delete other bookings, simply update the booking ID from '1' to a different booking ID number.\n\n**Authorisation**\n\nTo use this request you must be authorised.\n\nAuthorisation is achieved by creating a `Cookie` header with the value `token=abc123`. To get a valid token, you send a request to `POST /auth` using the `Auth` API in restful-booker-platform.\n\nSimply run the request once with the default credentials to have Postman add a `token` to the Cookies manager."
+					},
+					"response": []
+				}
+			],
+			"description": "## Restful-Booker-Platform: Booking\n\nThe Booking API of restful-booker-platform is responsible for managing the bookings within the platform. The API allows you to create, read, update and delete bookings\n\n**Authorisation**\n\nRequests such as read, update and delete bookings require you to be authorised.\n\nAuthorisation is achieved by creating a `Cookie` header with the value `token=abc123`. To get a valid token, you send a request to `POST /auth` using the `Auth` API in restful-booker-platform.\n\nSimply run the request once with the default credentials to have Postman add a `token` to the Cookies manager."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "https://automationintesting.online",
+			"type": "string"
+		}
+	]
+}
